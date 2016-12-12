@@ -6,17 +6,20 @@ public class Theater {
 	private String filename;
 	
 	public Theater (int nbRow, int nbCol){
-		//TODO
+		this.seats = new Seat[nbRow][nbCol];
+		for (int rowIterator = 0 ; rowIterator<nbRow ; rowIterator++){
+			for (int colIterator = 0 ; colIterator<nbCol ; colIterator++){
+				this.seats[rowIterator][colIterator] = new Seat(rowIterator, colIterator, SeatType.FIRST_CATEGORY, false);
+			}
+		}
 	}
 	
 	public int getNbRow(){
-		//TODO
-		return -1;
+		return seats.length;
 	}
 	
 	public int getNbCol(){
-		//TODO
-		return -1;
+		return seats[0].length;
 	}
 	
 	public String toString(){
