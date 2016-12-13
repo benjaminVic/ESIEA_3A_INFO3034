@@ -1,5 +1,7 @@
 package vic;
 
+import java.util.Objects;
+
 public enum SeatType {
 	SCENE("S", -1.0),
 	OBSTACLE("X", -1.0),
@@ -28,4 +30,14 @@ public enum SeatType {
 	public double getPrice(){
 		return this.price;
 	}
+	
+	 public static SeatType getSeatTypeFromSymbole(String symbole){
+		 for (SeatType st : SeatType.values()){
+			 if (Objects.equals(st.getSymbole().toLowerCase(),symbole.toLowerCase())){
+				 return st;
+			 }
+		 }
+		 return null;
+	 }
+	 
 }

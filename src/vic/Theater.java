@@ -1,5 +1,9 @@
 package vic;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Theater {
 
 	private Seat[][] seats;
@@ -11,6 +15,16 @@ public class Theater {
 			for (int colIterator = 0 ; colIterator<nbCol ; colIterator++){
 				this.seats[rowIterator][colIterator] = new Seat(rowIterator, colIterator, SeatType.FIRST_CATEGORY, false);
 			}
+		}
+	}
+	
+	public Theater (String filename) throws FileNotFoundException{
+		File f = new File(filename);
+		Scanner sc = new Scanner(f, "UTF-8");
+		sc.useDelimiter(sc.delimiter()+"|;+");
+		while(sc.hasNext()){
+			System.out.println(sc.next());
+			//seats[row][col] = new Seat(row, col, SeatType.getSeatTypeFromSymbole(symbole),Character.isUpperCase(symbole.charAt(0)));
 		}
 	}
 	
