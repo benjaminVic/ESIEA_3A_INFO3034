@@ -23,16 +23,45 @@ public class Theater {
 	}
 	
 	public String toString(){
-		//TODO
-		return null;
+		StringBuffer sb = new StringBuffer();
+		for (int rowIterator = 0 ; rowIterator < getNbRow()  ; rowIterator++) {
+			sb.append((char)('A'+rowIterator)+" ");
+			for (int columnIterator = 0 ; columnIterator<getNbCol() ; columnIterator++){
+				//En caps si le siège est réservé
+				if (seats[rowIterator][columnIterator].isBooked()){
+					sb.append('A');
+				} else {
+					sb.append('a');
+				}
+				sb.append(' ');
+			}
+			sb.append('\n');
+		}
+		
+		//On affiche la ligne de numéro de colonne
+		sb.append(" ");
+		for (int columnIterator = 0 ; columnIterator < getNbCol() ; columnIterator++){
+			sb.append(" " + columnIterator);
+		}
+		sb.append('\n');
+		
+		return sb.toString();
 	}
 	
 	public void makeReservation(int row, int col) throws InvalidActionException{
-		//TODO
+		if (seats[row][col].isBooked()){
+			throw new InvalidActionException("Il y a déjà une réservation à cet emplacement.");
+		} else {
+			seats[row][col].setBooked(true);
+		}
 	}
 	
 	public void cancelReservation(int row, int col)	throws InvalidActionException{
-		//TODO
+		if (seats[row][col].isBooked()){
+			seats[row][col].setBooked(false);
+		} else {
+			throw new InvalidActionException("Il n'y au aucune reservation à cet emplacement.");
+		}
 	}
 	
 }

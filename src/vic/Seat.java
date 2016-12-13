@@ -26,7 +26,7 @@ public class Seat {
 		return this.type;
 	}
 	
-	public boolean sBooked(){
+	public boolean isBooked(){
 		return this.isBooked;
 	}
 	

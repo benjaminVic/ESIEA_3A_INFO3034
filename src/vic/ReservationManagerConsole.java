@@ -20,7 +20,20 @@ public class ReservationManagerConsole {
 			switch(scannerResult){
 			
 			case "h" :
-				System.out.println("h: Print this help\nq: Quit");
+				System.out.println("h: Print this help\n"
+						+ "st : Show Theater\n"
+						+ "mr : Make a Reservation"
+						+ "cr : Cancel a reservation"
+						+ "q: Quit");
+				break;
+				
+			case "st" :
+				break;
+				
+			case "mr" :
+				break;
+				
+			case "cr" :
 				break;
 			}
 		}
