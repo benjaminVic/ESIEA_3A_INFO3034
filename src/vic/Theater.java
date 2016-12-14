@@ -25,8 +25,11 @@ public class Theater {
 	}
 
 	public Theater(String filename) throws FileNotFoundException {
+		//Choix du fichier
 		this.sourceFilePath = filename;
 		File f = new File(filename);
+		
+		//Lecture du fichier
 		Scanner sc = new Scanner(f, "UTF-8");
 		sc.useDelimiter(sc.delimiter() + "|;+");
 
@@ -104,24 +107,35 @@ public class Theater {
 		//Setting filename
 		String newFileNamePath;
 		if (Objects.isNull(sourceFilePath)){
-			newFileNamePath = "./theatre.bk;";
+			newFileNamePath = "./theatre.bak;";
 		} else {
-			newFileNamePath = sourceFilePath+".bk";
+			newFileNamePath = sourceFilePath+".bak";
 		}
 		
-		//Actually saving shit
+		//Prepping string
 		try {
 			FileWriter fw = new FileWriter(newFileNamePath);
 			StringBuilder sb = new StringBuilder();
 			sb.append(getNbRow() + ";" + getNbCol()+"\n");
 			for (int rowIterator = 0; rowIterator < getNbRow(); rowIterator++) {
 				for (int colIterator = 0; colIterator < getNbCol(); colIterator++) {
-					//TODO write the table
+					if (seats[rowIterator][colIterator].isBooked()){
+						sb.append(seats[rowIterator][colIterator].getType().getSymbole().toUpperCase());
+					} else {
+						sb.append(seats[rowIterator][colIterator].getType().getSymbole().toLowerCase());
+					}
 				}
+				sb.append('\n');
 			}
+			//Actually saving shit
+			//System.out.println(sb.toString());
+			fw.write(sb.toString());
+			fw.flush();
+			fw.close();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 	

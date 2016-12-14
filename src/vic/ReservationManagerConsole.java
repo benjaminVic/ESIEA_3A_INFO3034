@@ -54,6 +54,7 @@ public class ReservationManagerConsole {
 				break;
 			}
 		}
+		theater.save();
 		scan.close();
 		System.out.println("Bye Bye");
 	}
@@ -61,7 +62,7 @@ public class ReservationManagerConsole {
 	public void makeReservation(){
 		String valRow,valColumns;
 		System.out.println("\nPlease enter row letter");
-		valRow = scan.nextLine();
+		valRow = scan.nextLine().toUpperCase();
 		System.out.println("\nPlease enter colum number");
 		valColumns = scan.nextLine();
 		try {
