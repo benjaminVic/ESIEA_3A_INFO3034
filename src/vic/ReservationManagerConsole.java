@@ -1,6 +1,7 @@
 package vic;
 
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -8,13 +9,13 @@ public class ReservationManagerConsole {
 	
 	private Scanner scan;
 	private Theater theater;
+	private LinkedList<Client> clients;
 	
 	public ReservationManagerConsole(){
 		this.scan = new Scanner(System.in);
 		try {
 			this.theater = new Theater("files/test1.csv");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -52,8 +53,22 @@ public class ReservationManagerConsole {
 			case "cr" :
 				cancelReservation();
 				break;
+				
+			case "lc" :
+				listClient();
+				break;
+				
+			case "ac" :
+				addClient();
+				break;
+				
+			case "rc" :
+				removeLClient();
+				break;
+				
 			}
 		}
+		
 		theater.save();
 		scan.close();
 		System.out.println("Bye Bye");
@@ -85,4 +100,24 @@ public class ReservationManagerConsole {
 		}
 	}
 	
+	public void addClient(){
+		//TODO
+	}
+	
+	public Client selectClient(){
+		//TODO
+		return null;
+	}
+	
+	public void removeLClient(){
+		//TODO
+	}
+	
+	public void listClient(){
+		StringBuilder sb = new StringBuilder();
+		for (Client c : clients){
+			sb.append(c.toString()+" ");
+			//TODO
+		}
+	}
 }
