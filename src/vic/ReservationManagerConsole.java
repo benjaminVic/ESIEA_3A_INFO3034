@@ -12,7 +12,7 @@ public class ReservationManagerConsole {
 	public ReservationManagerConsole(){
 		this.scan = new Scanner(System.in);
 		try {
-			this.theater = new Theater("C:\\Users\\Benjamin\\Documents\\GitHub\\ESIEA_3A_INFO3034\\files\\test1.csv");
+			this.theater = new Theater("files/test1.csv");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

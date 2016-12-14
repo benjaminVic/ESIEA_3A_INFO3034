@@ -25,9 +25,8 @@ public class Theater {
 	}
 
 	public Theater(String filename) throws FileNotFoundException {
+		
 		//Choix du fichier
-
-		//TODO FIX THIS SHIT
 		File f = new File(filename+".bak");
 		if (f.exists()) {
 			this.sourceFilePath = filename+".bak";
@@ -40,7 +39,7 @@ public class Theater {
 		Scanner sc = new Scanner(f, "UTF-8");
 		sc.useDelimiter(sc.delimiter() + "|;+");
 
-		// On r�cup�re les premier params
+		// On récupère les premier params
 		int rowLenght = Integer.valueOf(sc.next());
 		int columnLenght = Integer.valueOf(sc.next());
 
@@ -73,7 +72,7 @@ public class Theater {
 		for (int rowIterator = 0; rowIterator < getNbRow(); rowIterator++) {
 			sb.append((char) ('A' + rowIterator) + " ");
 			for (int columnIterator = 0; columnIterator < getNbCol(); columnIterator++) {
-				// En caps si le si�ge est r�serv�
+				// En caps si le siège est réservé
 				if (seats[rowIterator][columnIterator].isBooked()) {
 					sb.append(seats[rowIterator][columnIterator].getType().getSymbole().toUpperCase());
 				} else {
@@ -84,7 +83,7 @@ public class Theater {
 			sb.append('\n');
 		}
 
-		// On affiche la ligne de num�ro de colonne
+		// On affiche la ligne de numéro de colonne
 		sb.append(" ");
 		for (int columnIterator = 0; columnIterator < getNbCol(); columnIterator++) {
 			sb.append(" " + columnIterator);
@@ -96,7 +95,7 @@ public class Theater {
 
 	public void makeReservation(int row, int col) throws InvalidActionException {
 		if (seats[row][col].isBooked()) {
-			throw new InvalidActionException("Il y a d�j� une r�servation � cet emplacement.");
+			throw new InvalidActionException("Il y a déjà une réservation à cet emplacement.");
 		} else {
 			seats[row][col].setBooked(true);
 		}
@@ -106,7 +105,7 @@ public class Theater {
 		if (seats[row][col].isBooked()) {
 			seats[row][col].setBooked(false);
 		} else {
-			throw new InvalidActionException("Il n'y au aucune reservation � cet emplacement.");
+			throw new InvalidActionException("Il n'y au aucune réservation à cet emplacement.");
 		}
 	}
 
@@ -116,7 +115,11 @@ public class Theater {
 		if (Objects.isNull(sourceFilePath)){
 			newFileNamePath = "./theatre.bak;";
 		} else {
-			newFileNamePath = sourceFilePath+".bak";
+			if (sourceFilePath.contains(".bak")){
+				newFileNamePath = sourceFilePath;
+			} else {
+				newFileNamePath = sourceFilePath+".bak";
+			}
 		}
 		
 		//Prepping string
@@ -131,6 +134,7 @@ public class Theater {
 					} else {
 						sb.append(seats[rowIterator][colIterator].getType().getSymbole().toLowerCase());
 					}
+					sb.append(';');
 				}
 				sb.append('\n');
 			}
