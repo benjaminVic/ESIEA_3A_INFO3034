@@ -26,14 +26,21 @@ public class Theater {
 
 	public Theater(String filename) throws FileNotFoundException {
 		//Choix du fichier
-		this.sourceFilePath = filename;
-		File f = new File(filename);
+
+		//TODO FIX THIS SHIT
+		File f = new File(filename+".bak");
+		if (f.exists()) {
+			this.sourceFilePath = filename+".bak";
+		} else {
+			this.sourceFilePath = filename;
+			f = new File(sourceFilePath);
+		}
 		
 		//Lecture du fichier
 		Scanner sc = new Scanner(f, "UTF-8");
 		sc.useDelimiter(sc.delimiter() + "|;+");
 
-		// On récupère les premier params
+		// On rï¿½cupï¿½re les premier params
 		int rowLenght = Integer.valueOf(sc.next());
 		int columnLenght = Integer.valueOf(sc.next());
 
@@ -66,7 +73,7 @@ public class Theater {
 		for (int rowIterator = 0; rowIterator < getNbRow(); rowIterator++) {
 			sb.append((char) ('A' + rowIterator) + " ");
 			for (int columnIterator = 0; columnIterator < getNbCol(); columnIterator++) {
-				// En caps si le siège est réservé
+				// En caps si le siï¿½ge est rï¿½servï¿½
 				if (seats[rowIterator][columnIterator].isBooked()) {
 					sb.append(seats[rowIterator][columnIterator].getType().getSymbole().toUpperCase());
 				} else {
@@ -77,7 +84,7 @@ public class Theater {
 			sb.append('\n');
 		}
 
-		// On affiche la ligne de numéro de colonne
+		// On affiche la ligne de numï¿½ro de colonne
 		sb.append(" ");
 		for (int columnIterator = 0; columnIterator < getNbCol(); columnIterator++) {
 			sb.append(" " + columnIterator);
@@ -89,7 +96,7 @@ public class Theater {
 
 	public void makeReservation(int row, int col) throws InvalidActionException {
 		if (seats[row][col].isBooked()) {
-			throw new InvalidActionException("Il y a déjà une réservation à cet emplacement.");
+			throw new InvalidActionException("Il y a dï¿½jï¿½ une rï¿½servation ï¿½ cet emplacement.");
 		} else {
 			seats[row][col].setBooked(true);
 		}
@@ -99,7 +106,7 @@ public class Theater {
 		if (seats[row][col].isBooked()) {
 			seats[row][col].setBooked(false);
 		} else {
-			throw new InvalidActionException("Il n'y au aucune reservation à cet emplacement.");
+			throw new InvalidActionException("Il n'y au aucune reservation ï¿½ cet emplacement.");
 		}
 	}
 
