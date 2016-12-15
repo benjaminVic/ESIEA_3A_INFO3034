@@ -16,6 +16,18 @@ public class ReservationManagerConsole {
 	private static final String pathToClients = "files/clientList.bak";
 	
 	public ReservationManagerConsole(){
+		
+		//AU besoin on crée le dossier files
+		File filesDir = new File("files");
+		if (!filesDir.exists()) {
+		    try{
+		        filesDir.mkdir();
+		    } 
+		    catch(SecurityException se){
+		        se.printStackTrace();
+		    }
+		}
+		
 		this.scan = new Scanner(System.in);
 		try {
 			this.theater = new Theater("files/test1.csv");
@@ -27,6 +39,14 @@ public class ReservationManagerConsole {
 		if (f.exists()){
 			try {
 				clients = Serializer.<LinkedList<Client>>loadFromFile(pathToClients);
+				//On regarde le numéro le plus haut
+				int id=0;
+				for (Client c : clients){
+					if (c.getId()>id){
+						id = c.getId()+1;
+					}
+				}
+				Client.setCurrentId(id);
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
@@ -87,7 +107,6 @@ public class ReservationManagerConsole {
 		try {
 			Serializer.saveToFile(pathToClients, clients);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		theater.save();

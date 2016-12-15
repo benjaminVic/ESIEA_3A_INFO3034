@@ -44,7 +44,7 @@ public class Client implements Serializable {
 		return String.valueOf(getId())+" "+toString()+" ("+getAddress()+")";
 	}
 	
-	public void setCurrentId(int currentId){
-		
+	public static void setCurrentId(int id){
+		currentId = id;
 	}
 }
