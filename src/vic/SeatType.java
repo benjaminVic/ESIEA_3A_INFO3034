@@ -10,34 +10,34 @@ public enum SeatType {
 	THIRD_CATEGORY("c",50.0),
 	FOURTH_CATEGORY("d",20.0),
 	FIFTH_CATEGORY("e",10.0);
-	
+
 	private String symbole;
 	private double price;
 
-	SeatType(String symbole, double price){
+	SeatType(String symbole, double price) {
 		this.symbole = symbole;
 		this.price = price;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return getSymbole();
 	}
-	
-	public String getSymbole(){
+
+	public String getSymbole() {
 		return this.symbole;
 	}
-	
-	public double getPrice(){
+
+	public double getPrice() {
 		return this.price;
 	}
-	
-	 public static SeatType getSeatTypeFromSymbole(String symbole){
-		 for (SeatType st : SeatType.values()){
-			 if (Objects.equals(st.getSymbole().toLowerCase(),symbole.toLowerCase())){
-				 return st;
-			 }
-		 }
-		 return null;
-	 }
-	 
+
+	public static SeatType getSeatTypeFromSymbole(String symbole) {
+		for (SeatType st : SeatType.values()) {
+			if (Objects.equals(st.getSymbole().toLowerCase(), symbole.toLowerCase())) {
+				return st;
+			}
+		}
+		return null;
+	}
+
 }

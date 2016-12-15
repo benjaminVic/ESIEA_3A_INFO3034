@@ -6,37 +6,37 @@ public class Seat {
 	private int col;
 	private SeatType type;
 	private boolean isBooked;
-	
-	public Seat(int row, int col, SeatType type, boolean isBooked){
+
+	public Seat(int row, int col, SeatType type, boolean isBooked) {
 		this.row = row;
 		this.col = col;
 		this.type = type;
 		this.isBooked = isBooked;
 	}
-	
-	public int getRow(){
+
+	public int getRow() {
 		return this.row;
 	}
-	
-	public int getCol(){
+
+	public int getCol() {
 		return this.col;
 	}
-	
-	public SeatType getType(){
+
+	public SeatType getType() {
 		return this.type;
 	}
-	
-	public boolean isBooked(){
+
+	public boolean isBooked() {
 		return this.isBooked;
 	}
-	
-	public void setBooked(boolean isBooked){
+
+	public void setBooked(boolean isBooked) {
 		this.isBooked = isBooked;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		char rowLetter = (char) ('A' + row);
-		return ""+rowLetter+col;
+		return "" + rowLetter + col;
 	}
-	
+
 }

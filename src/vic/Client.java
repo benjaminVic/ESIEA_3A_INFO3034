@@ -37,7 +37,7 @@ public class Client {
 	}
 	
 	public String getFullString(){
-		return String.valueOf(getId())+" "+toString()+" "+getAddress();
+		return String.valueOf(getId())+" "+toString()+" ("+getAddress()+")";
 	}
 	
 }

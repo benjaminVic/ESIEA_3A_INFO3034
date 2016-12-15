@@ -1,6 +1,7 @@
 package vic;
 
 import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -18,6 +19,7 @@ public class ReservationManagerConsole {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		this.clients = new LinkedList<Client>();
 	}
 
 	public static void main(String[] args) {
@@ -39,6 +41,9 @@ public class ReservationManagerConsole {
 						+ "st : Show Theater\n"
 						+ "mr : Make a Reservation\n"
 						+ "cr : Cancel a reservation\n"
+						+ "ac : Add Clients\n"
+						+ "lc : List all Clients\n"
+						+ "rc : Remove all Clients\n"
 						+ "q: Quit");
 				break;
 				
@@ -101,7 +106,17 @@ public class ReservationManagerConsole {
 	}
 	
 	public void addClient(){
-		//TODO
+		String firstName,lastName,address;
+
+		System.out.print("\nPlease enter your lastName :");
+		lastName = scan.nextLine();
+		System.out.print("\nPlease enter your firstName : ");
+		firstName = scan.nextLine();		
+		System.out.print("\nPlease enter your address : ");
+		address = scan.nextLine();
+		
+		Client client = new Client(lastName, firstName, address);
+		clients.add(client);
 	}
 	
 	public Client selectClient(){
@@ -110,14 +125,39 @@ public class ReservationManagerConsole {
 	}
 	
 	public void removeLClient(){
-		//TODO
+		if (clients.isEmpty()){
+			System.out.println("Please add a Client first !");
+		} else {
+			//Si il y a des clients dans l'appli
+			for (Client c : clients){
+				System.out.println("Client n°"+c.getFullString());
+			}
+			System.out.println("Please enter the id of the client to be removed or -1 to cancel the action.");
+			try {
+				int clientId = scan.nextInt();
+				for (Client c : clients){
+					if (c.getId() == clientId){
+						clients.remove(clients.indexOf(c));
+						break;
+					}
+				}
+			} catch (InputMismatchException ime) {
+				System.out.println("This is not a valid number !");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void listClient(){
 		StringBuilder sb = new StringBuilder();
-		for (Client c : clients){
-			sb.append(c.toString()+" ");
-			//TODO
+		sb.append('[');
+		if (!clients.isEmpty()){
+			for (Client c : clients){
+				sb.append(c.toString()+";");
+			}
 		}
+		sb.append(']');
+		System.out.println(sb.toString());
 	}
 }

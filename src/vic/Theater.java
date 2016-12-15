@@ -25,17 +25,17 @@ public class Theater {
 	}
 
 	public Theater(String filename) throws FileNotFoundException {
-		
-		//Choix du fichier
-		File f = new File(filename+".bak");
+
+		// Choix du fichier
+		File f = new File(filename + ".bak");
 		if (f.exists()) {
-			this.sourceFilePath = filename+".bak";
+			this.sourceFilePath = filename + ".bak";
 		} else {
 			this.sourceFilePath = filename;
 			f = new File(sourceFilePath);
 		}
-		
-		//Lecture du fichier
+
+		// Lecture du fichier
 		Scanner sc = new Scanner(f, "UTF-8");
 		sc.useDelimiter(sc.delimiter() + "|;+");
 
@@ -44,17 +44,18 @@ public class Theater {
 		int columnLenght = Integer.valueOf(sc.next());
 
 		this.seats = new Seat[rowLenght][columnLenght];
-		
+
 		for (int row = 0; row < rowLenght; row++) {
-			for (int col = 0 ; col < columnLenght; col++) {
+			for (int col = 0; col < columnLenght; col++) {
 				String valeurLue = sc.next();
-				if (!Objects.equals(valeurLue,"")) {
-					seats[row][col] = new Seat(row, col, 
-							SeatType.getSeatTypeFromSymbole(valeurLue),Character.isUpperCase(valeurLue.charAt(0)));
+				if (!Objects.equals(valeurLue, "")) {
+					seats[row][col] = new Seat(row, col, SeatType.getSeatTypeFromSymbole(valeurLue),
+							Character.isUpperCase(valeurLue.charAt(0)));
 				} else {
 					col--;
 				}
-				// seats[row][col] = new Seat(row, col, SeatType.getSeatTypeFromSymbole(symbole),Character.isUpperCase(symbole.charAt(0)));
+				// seats[row][col] = new Seat(row, col,
+				// SeatType.getSeatTypeFromSymbole(symbole),Character.isUpperCase(symbole.charAt(0)));
 			}
 		}
 	}
@@ -109,27 +110,27 @@ public class Theater {
 		}
 	}
 
-	public void save(){
-		//Setting filename
+	public void save() {
+		// Setting filename
 		String newFileNamePath;
-		if (Objects.isNull(sourceFilePath)){
+		if (Objects.isNull(sourceFilePath)) {
 			newFileNamePath = "./theatre.bak;";
 		} else {
-			if (sourceFilePath.contains(".bak")){
+			if (sourceFilePath.contains(".bak")) {
 				newFileNamePath = sourceFilePath;
 			} else {
-				newFileNamePath = sourceFilePath+".bak";
+				newFileNamePath = sourceFilePath + ".bak";
 			}
 		}
-		
-		//Prepping string
+
+		// Prepping string
 		try {
 			FileWriter fw = new FileWriter(newFileNamePath);
 			StringBuilder sb = new StringBuilder();
-			sb.append(getNbRow() + ";" + getNbCol()+"\n");
+			sb.append(getNbRow() + ";" + getNbCol() + "\n");
 			for (int rowIterator = 0; rowIterator < getNbRow(); rowIterator++) {
 				for (int colIterator = 0; colIterator < getNbCol(); colIterator++) {
-					if (seats[rowIterator][colIterator].isBooked()){
+					if (seats[rowIterator][colIterator].isBooked()) {
 						sb.append(seats[rowIterator][colIterator].getType().getSymbole().toUpperCase());
 					} else {
 						sb.append(seats[rowIterator][colIterator].getType().getSymbole().toLowerCase());
@@ -138,16 +139,16 @@ public class Theater {
 				}
 				sb.append('\n');
 			}
-			//Actually saving shit
-			//System.out.println(sb.toString());
+			// Actually saving shit
+			// System.out.println(sb.toString());
 			fw.write(sb.toString());
 			fw.flush();
 			fw.close();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
 	}
-	
+
 }
