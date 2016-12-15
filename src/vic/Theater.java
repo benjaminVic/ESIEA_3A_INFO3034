@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Theater {
 
 	private Seat[][] seats;
+	@SuppressWarnings("unused")
 	private String filename;
 	private final String sourceFilePath;
 
@@ -24,6 +25,7 @@ public class Theater {
 		this.sourceFilePath = null;
 	}
 
+	@SuppressWarnings("resource")
 	public Theater(String filename) throws FileNotFoundException {
 
 		// Choix du fichier
@@ -54,8 +56,6 @@ public class Theater {
 				} else {
 					col--;
 				}
-				// seats[row][col] = new Seat(row, col,
-				// SeatType.getSeatTypeFromSymbole(symbole),Character.isUpperCase(symbole.charAt(0)));
 			}
 		}
 	}

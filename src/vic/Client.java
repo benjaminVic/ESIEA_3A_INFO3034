@@ -1,14 +1,18 @@
 package vic;
 
-public class Client {
+import java.io.Serializable;
+
+public class Client implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private static int currentId = 0;
 	private final int id;
-	private final String lastName;
+	private final String lastName; 
 	private final String firstName;
 	private final String address;
 	
-	public Client (String lastName, String firstName, String address){
+	public Client (String lastName, String firstName, String address) {
 		this.id = currentId;
 		this.lastName = lastName;
 		this.firstName = firstName;
@@ -40,4 +44,7 @@ public class Client {
 		return String.valueOf(getId())+" "+toString()+" ("+getAddress()+")";
 	}
 	
+	public void setCurrentId(int currentId){
+		
+	}
 }

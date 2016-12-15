@@ -1,6 +1,8 @@
 package vic;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -11,6 +13,7 @@ public class ReservationManagerConsole {
 	private Scanner scan;
 	private Theater theater;
 	private LinkedList<Client> clients;
+	private static final String pathToClients = "files/clientList.bak";
 	
 	public ReservationManagerConsole(){
 		this.scan = new Scanner(System.in);
@@ -20,6 +23,14 @@ public class ReservationManagerConsole {
 			e.printStackTrace();
 		}
 		this.clients = new LinkedList<Client>();
+		File f = new File(pathToClients);
+		if (f.exists()){
+			try {
+				clients = Serializer.<LinkedList<Client>>loadFromFile(pathToClients);
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void main(String[] args) {
@@ -73,7 +84,12 @@ public class ReservationManagerConsole {
 				
 			}
 		}
-		
+		try {
+			Serializer.saveToFile(pathToClients, clients);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		theater.save();
 		scan.close();
 		System.out.println("Bye Bye");
