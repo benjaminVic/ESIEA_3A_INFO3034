@@ -1,6 +1,8 @@
 package vic;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Client implements Serializable {
 
@@ -11,6 +13,7 @@ public class Client implements Serializable {
 	private final String lastName; 
 	private final String firstName;
 	private final String address;
+	public LinkedList<Seat> seats;
 	
 	public Client (String lastName, String firstName, String address) {
 		this.id = currentId;
@@ -18,6 +21,7 @@ public class Client implements Serializable {
 		this.firstName = firstName;
 		this.address = address;
 		currentId ++;
+		seats = new LinkedList<Seat>();
 	}
 
 	public int getId(){
@@ -44,7 +48,33 @@ public class Client implements Serializable {
 		return String.valueOf(getId())+" "+toString()+" ("+getAddress()+")";
 	}
 	
-	public static void setCurrentId(int id){
+	public void setCurrentId(int id){
 		currentId = id;
 	}
+	
+	public void addSeat(Seat s){
+		seats.add(s);
+	}
+	
+	public void removeSeat(Seat s){
+		seats.remove(s);	
+	}
+	
+	public List<Seat> getSeats(){
+		return seats;
+	}
+	
+	public double getReservationCost(){
+		double sum = 0;
+		for (Seat s : seats){
+			sum = sum + s.getType().getPrice();
+		}
+		return sum;
+	}
+	
+	public String getExplicitedCost(){
+		//TODO
+		return null;
+	}
+	
 }

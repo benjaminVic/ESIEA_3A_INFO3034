@@ -44,9 +44,9 @@ public class ReservationManagerConsole {
 				for (Client c : clients){
 					if (c.getId()>id){
 						id = c.getId()+1;
+						c.setCurrentId(id);
 					}
-				}
-				Client.setCurrentId(id);
+				}				
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
