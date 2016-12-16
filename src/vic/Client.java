@@ -73,8 +73,14 @@ public class Client implements Serializable {
 	}
 	
 	public String getExplicitedCost(){
-		//TODO
-		return null;
+		StringBuilder sb = new StringBuilder();
+		double  total = 0;
+		for(Seat s : seats){
+			sb.append(s.toString()+"("+s.getType().getPrice()+"€)\n");
+			total = total+s.getType().getPrice();
+		}
+		sb.append("Total : "+total+"€\n");
+		return sb.toString();
 	}
 	
 }
