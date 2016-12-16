@@ -17,7 +17,7 @@ public class ReservationManagerConsole {
 	
 	public ReservationManagerConsole(){
 		
-		//AU besoin on crée le dossier files
+		//Au besoin on crÃ©e le dossier files
 		File filesDir = new File("files");
 		if (!filesDir.exists()) {
 		    try{
@@ -39,7 +39,7 @@ public class ReservationManagerConsole {
 		if (f.exists()){
 			try {
 				clients = Serializer.<LinkedList<Client>>loadFromFile(pathToClients);
-				//On regarde le numéro le plus haut
+				//On regarde le numÃ©ro le plus haut
 				int id=0;
 				for (Client c : clients){
 					if (c.getId()>id){
@@ -71,6 +71,7 @@ public class ReservationManagerConsole {
 				System.out.println("h: Print this help\n"
 						+ "st : Show Theater\n"
 						+ "mr : Make a Reservation\n"
+						+ "sr : Show Reservation\n"
 						+ "cr : Cancel a reservation\n"
 						+ "ac : Add Clients\n"
 						+ "lc : List all Clients\n"
@@ -84,6 +85,10 @@ public class ReservationManagerConsole {
 				
 			case "mr" :
 				makeReservation();
+				break;
+				
+			case "sr" :
+				showReservation();
 				break;
 				
 			case "cr" :
@@ -127,6 +132,30 @@ public class ReservationManagerConsole {
 		}
 	}
 	
+	public void showReservation(){
+		if (clients.isEmpty()){
+			System.out.println("Please add a Client first !");
+		} else {
+			for (Client c : clients){
+				System.out.println("Client nÂ°"+c.getFullString());
+			}
+			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
+			try {
+				int clientId = scan.nextInt();
+				for (Client c : clients){
+					if (c.getId() == clientId){
+						System.out.println(c.getExplicitedCost());
+						break;
+					}
+				}
+			} catch (InputMismatchException ime) {
+				System.out.println("This is not a valid number !");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void cancelReservation(){
 		String valRow,valColumns;
 		System.out.println("\nPlease enter row letter");
@@ -165,7 +194,7 @@ public class ReservationManagerConsole {
 		} else {
 			//Si il y a des clients dans l'appli
 			for (Client c : clients){
-				System.out.println("Client n°"+c.getFullString());
+				System.out.println("Client nÂ°"+c.getFullString());
 			}
 			System.out.println("Please enter the id of the client to be removed or -1 to cancel the action.");
 			try {
