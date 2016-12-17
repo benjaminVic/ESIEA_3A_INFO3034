@@ -103,9 +103,10 @@ public class Theater {
 		}
 	}
 
-	public void cancelReservation(int row, int col) throws InvalidActionException {
+	public Seat cancelReservation(int row, int col) throws InvalidActionException {
 		if (seats[row][col].isBooked()) {
 			seats[row][col].setBooked(false);
+			return seats[row][col];
 		} else {
 			throw new InvalidActionException("Il n'y au aucune réservation à cet emplacement.");
 		}

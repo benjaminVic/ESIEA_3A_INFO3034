@@ -176,17 +176,39 @@ public class ReservationManagerConsole {
 			}
 		}
 	}
-	
+
 	public void cancelReservation(){
-		String valRow,valColumns;
-		System.out.println("\nPlease enter row letter");
-		valRow = scan.nextLine().toUpperCase();
-		System.out.println("\nPlease enter colum number");
-		valColumns = scan.nextLine();
-		try {
-			theater.cancelReservation((int)valRow.toCharArray()[0]-'A', Integer.valueOf(valColumns));
-		} catch (InvalidActionException e) {
-			System.out.println("/!\\ This space is not valid for reservation /!\\");
+		if (clients.isEmpty()){
+			System.out.println("Please add a Client first !");
+		} else {
+			for (Client c : clients){
+				System.out.println("Client n°"+c.getFullString());
+			}
+			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
+			try {
+				int clientId = Integer.valueOf(scan.nextLine());
+				for (Client c : clients){
+					if (c.getId() == clientId){
+						String valRow,valColumns;
+						System.out.println("\nPlease enter row letter");
+						valRow = scan.nextLine().toUpperCase();
+						System.out.println("\nPlease enter colum number");
+						valColumns = scan.nextLine();
+						try {
+							c.removeSeat(theater.cancelReservation((int)valRow.toCharArray()[0]-'A',
+									Integer.valueOf(valColumns)));
+						} catch (InvalidActionException e) {
+							System.out.println("/!\\ This space is not valid for reservation /!\\");
+						}
+
+						break;
+					}
+				}
+			} catch (InputMismatchException ime) {
+				System.out.println("This is not a valid number !");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
