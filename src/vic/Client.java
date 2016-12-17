@@ -72,14 +72,14 @@ public class Client implements Serializable {
 		return sum;
 	}
 	
-	public String getExplicitedCost(){
+	public String getExplictedCost(){
 		StringBuilder sb = new StringBuilder();
 		double  total = 0;
 		for(Seat s : seats){
-			sb.append(s.toString()+"("+s.getType().getPrice()+"€)\n");
+			sb.append(s.toString()+"("+s.getType().getPrice()+"â‚¬)\n");
 			total = total+s.getType().getPrice();
 		}
-		sb.append("Total : "+total+"€\n");
+		sb.append("Total : "+total+"â‚¬\n");
 		return sb.toString();
 	}
 	

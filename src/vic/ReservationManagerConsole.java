@@ -165,7 +165,7 @@ public class ReservationManagerConsole {
 				int clientId = Integer.valueOf(scan.nextLine());
 				for (Client c : clients){
 					if (c.getId() == clientId){
-						System.out.println(c.getExplicitedCost());
+						System.out.println(c.getExplictedCost());
 						break;
 					}
 				}
