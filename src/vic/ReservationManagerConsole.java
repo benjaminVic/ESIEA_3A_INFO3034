@@ -120,15 +120,36 @@ public class ReservationManagerConsole {
 	}
 
 	public void makeReservation(){
-		String valRow,valColumns;
-		System.out.println("\nPlease enter row letter");
-		valRow = scan.nextLine().toUpperCase();
-		System.out.println("\nPlease enter colum number");
-		valColumns = scan.nextLine();
-		try {
-			theater.makeReservation((int)valRow.toCharArray()[0]-'A', Integer.valueOf(valColumns));
-		} catch (InvalidActionException e) {
-			System.out.println("/!\\ This space is not valid for reservation /!\\");
+		if (clients.isEmpty()){
+			System.out.println("Please add a Client first !");
+		} else {
+			for (Client c : clients){
+				System.out.println("Client n°"+c.getFullString());
+			}
+			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
+			try {
+				int clientId = Integer.valueOf(scan.nextLine());
+				for (Client c : clients){
+					if (c.getId() == clientId){
+						String valRow,valColumns;
+						System.out.println("Please enter row letter");
+						valRow = scan.nextLine().toUpperCase();
+						System.out.println("Please enter colum number");
+						valColumns = scan.nextLine();
+						try {
+							c.addSeat(theater.makeReservation((int)valRow.toCharArray()[0]-'A',
+									Integer.valueOf(valColumns)));
+						} catch (Exception e) {
+							System.out.println("/!\\ This space is not valid for reservation /!\\");
+						}
+						break;
+					}
+				}
+			} catch (InputMismatchException ime) {
+				System.out.println("This is not a valid number !");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -141,7 +162,7 @@ public class ReservationManagerConsole {
 			}
 			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
 			try {
-				int clientId = scan.nextInt();
+				int clientId = Integer.valueOf(scan.nextLine());
 				for (Client c : clients){
 					if (c.getId() == clientId){
 						System.out.println(c.getExplicitedCost());
@@ -159,7 +180,7 @@ public class ReservationManagerConsole {
 	public void cancelReservation(){
 		String valRow,valColumns;
 		System.out.println("\nPlease enter row letter");
-		valRow = scan.nextLine();
+		valRow = scan.nextLine().toUpperCase();
 		System.out.println("\nPlease enter colum number");
 		valColumns = scan.nextLine();
 		try {
@@ -172,11 +193,11 @@ public class ReservationManagerConsole {
 	public void addClient(){
 		String firstName,lastName,address;
 
-		System.out.print("\nPlease enter your lastName :");
+		System.out.println("Please enter your lastName :");
 		lastName = scan.nextLine();
-		System.out.print("\nPlease enter your firstName : ");
+		System.out.println("Please enter your firstName : ");
 		firstName = scan.nextLine();		
-		System.out.print("\nPlease enter your address : ");
+		System.out.println("Please enter your address : ");
 		address = scan.nextLine();
 		
 		Client client = new Client(lastName, firstName, address);
@@ -198,7 +219,7 @@ public class ReservationManagerConsole {
 			}
 			System.out.println("Please enter the id of the client to be removed or -1 to cancel the action.");
 			try {
-				int clientId = scan.nextInt();
+				int clientId = Integer.valueOf(scan.nextLine());
 				for (Client c : clients){
 					if (c.getId() == clientId){
 						clients.remove(clients.indexOf(c));
