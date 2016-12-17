@@ -94,11 +94,12 @@ public class Theater {
 		return sb.toString();
 	}
 
-	public void makeReservation(int row, int col) throws InvalidActionException {
+	public Seat makeReservation(int row, int col) throws InvalidActionException {
 		if (seats[row][col].isBooked()) {
 			throw new InvalidActionException("Il y a déjà une réservation à cet emplacement.");
 		} else {
 			seats[row][col].setBooked(true);
+			return seats[row][col];
 		}
 	}
 
