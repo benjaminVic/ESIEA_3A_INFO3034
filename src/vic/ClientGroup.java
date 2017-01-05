@@ -1,5 +1,7 @@
  package vic;
 
+import java.util.Objects;
+
 public class ClientGroup extends Client{
 
 	public ClientGroup(String lastName, String firstName, String address) {
@@ -13,16 +15,29 @@ public class ClientGroup extends Client{
 	
 	@Override
 	public double getReservationCost(){
-		return -1;
-		//TODO
+		double sum = 0;
+		
+		for (Seat s : seats){
+			sum = sum + (s.getType().getPrice());
+		}
+		sum = sum * getPromotionByQuantity(seats.size());
+		
+		return sum;
 	}
 	
 	@Override
 	public String getExplictedCost(){
-		return null;
-		//TODO
+		StringBuilder sb = new StringBuilder();
+		double total = 0;
+		for (Seat s : seats) {
+			sb.append(s).append(toString()).append("(").append(s.getType().getPrice()).append("€)\n");
+			total = total + s.getType().getPrice();
+		}
+		sb.append(" ").append((1.0-getPromotionByQuantity(seats.size()))*100).append("%\n");
+		sb.append("Total : " + total + "€\n");
+		return sb.toString();
 	}
-	
+		
 	private double getPromotionByQuantity(int nbSeats){
 		if (seats.size()>10){
 			return 0.8;
