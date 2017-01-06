@@ -9,25 +9,24 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class ReservationManagerConsole {
-	
+
 	private Scanner scan;
 	private Theater theater;
 	private LinkedList<Client> clients;
 	private static final String pathToClients = "files/clientList.bak";
-	
-	public ReservationManagerConsole(){
-		
-		//Au besoin on crée le dossier files
+
+	public ReservationManagerConsole() {
+
+		// Au besoin on crée le dossier files
 		File filesDir = new File("files");
 		if (!filesDir.exists()) {
-		    try{
-		        filesDir.mkdir();
-		    } 
-		    catch(SecurityException se){
-		        se.printStackTrace();
-		    }
+			try {
+				filesDir.mkdir();
+			} catch (SecurityException se) {
+				se.printStackTrace();
+			}
 		}
-		
+
 		this.scan = new Scanner(System.in);
 		try {
 			this.theater = new Theater("files/test1.csv");
@@ -36,17 +35,19 @@ public class ReservationManagerConsole {
 		}
 		this.clients = new LinkedList<Client>();
 		File f = new File(pathToClients);
-		if (f.exists()){
+		if (f.exists()) {
 			try {
-				clients = Serializer.<LinkedList<Client>>loadFromFile(pathToClients);
-				//On regarde le numéro le plus haut
-				int id=0;
-				for (Client c : clients){
-					if (c.getId()>id){
-						id = c.getId()+1;
-						c.setCurrentId(id);
+				synchronized(this) {
+					clients = Serializer.<LinkedList<Client>>loadFromFile(pathToClients);
+				}
+				// On regarde le numéro le plus haut
+				int id = -1;
+				for (Client c : clients) {
+					if (c.getId() > id) {
+						id = c.getId();
+						c.setCurrentId(id+1);
 					}
-				}				
+				}
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
@@ -55,58 +56,52 @@ public class ReservationManagerConsole {
 
 	public static void main(String[] args) {
 		ReservationManagerConsole rmc = new ReservationManagerConsole();
-		rmc.menuHandler();		
+		rmc.menuHandler();
 	}
-	
-	public void menuHandler(){
+
+	public void menuHandler() {
 		System.out.println("Welcome to the Reservation Manager");
 		String scannerResult = new String("");
-		
-		while (!Objects.equals(scannerResult,"q")){
+
+		while (!Objects.equals(scannerResult, "q")) {
 			System.out.println("What do you want to do (h for help)");
 			scannerResult = scan.nextLine();
-			switch(scannerResult){
-			
-			case "h" :
-				System.out.println("h: Print this help\n"
-						+ "st : Show Theater\n"
-						+ "mr : Make a Reservation\n"
-						+ "sr : Show Reservation\n"
-						+ "cr : Cancel a reservation\n"
-						+ "ac : Add Clients\n"
-						+ "lc : List all Clients\n"
-						+ "rc : Remove all Clients\n"
-						+ "q: Quit");
+			switch (scannerResult) {
+
+			case "h":
+				System.out.println("h: Print this help\n" + "st : Show Theater\n" + "mr : Make a Reservation\n"
+						+ "sr : Show Reservation\n" + "cr : Cancel a reservation\n" + "ac : Add Clients\n"
+						+ "lc : List all Clients\n" + "rc : Remove all Clients\n" + "q: Quit");
 				break;
-				
-			case "st" :
+
+			case "st":
 				System.out.println(theater.toString());
 				break;
-				
-			case "mr" :
+
+			case "mr":
 				makeReservation();
 				break;
-				
-			case "sr" :
+
+			case "sr":
 				showReservation();
 				break;
-				
-			case "cr" :
+
+			case "cr":
 				cancelReservation();
 				break;
-				
-			case "lc" :
+
+			case "lc":
 				listClient();
 				break;
-				
-			case "ac" :
+
+			case "ac":
 				addClient();
 				break;
-				
-			case "rc" :
+
+			case "rc":
 				removeLClient();
 				break;
-				
+
 			}
 		}
 		try {
@@ -114,30 +109,32 @@ public class ReservationManagerConsole {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		theater.save();
+		synchronized(this){
+			theater.save();
+		}
 		scan.close();
 		System.out.println("Bye Bye");
 	}
 
-	public void makeReservation(){
-		if (clients.isEmpty()){
+	public void makeReservation() {
+		if (clients.isEmpty()) {
 			System.out.println("Please add a Client first !");
 		} else {
-			for (Client c : clients){
-				System.out.println("Client n°"+c.getFullString());
+			for (Client c : clients) {
+				System.out.println("Client n°" + c.getFullString());
 			}
 			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
 			try {
 				int clientId = Integer.valueOf(scan.nextLine());
-				for (Client c : clients){
-					if (c.getId() == clientId){
-						String valRow,valColumns;
+				for (Client c : clients) {
+					if (c.getId() == clientId) {
+						String valRow, valColumns;
 						System.out.println("Please enter row letter");
 						valRow = scan.nextLine().toUpperCase();
 						System.out.println("Please enter colum number");
 						valColumns = scan.nextLine();
 						try {
-							c.addSeat(theater.makeReservation((int)valRow.toCharArray()[0]-'A',
+							c.addSeat(theater.makeReservation((int) valRow.toCharArray()[0] - 'A',
 									Integer.valueOf(valColumns)));
 						} catch (Exception e) {
 							System.out.println("/!\\ This space is not valid for reservation /!\\");
@@ -152,19 +149,19 @@ public class ReservationManagerConsole {
 			}
 		}
 	}
-	
-	public void showReservation(){
-		if (clients.isEmpty()){
+
+	public void showReservation() {
+		if (clients.isEmpty()) {
 			System.out.println("Please add a Client first !");
 		} else {
-			for (Client c : clients){
-				System.out.println("Client n°"+c.getFullString());
+			for (Client c : clients) {
+				System.out.println("Client n°" + c.getFullString());
 			}
 			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
 			try {
 				int clientId = Integer.valueOf(scan.nextLine());
-				for (Client c : clients){
-					if (c.getId() == clientId){
+				for (Client c : clients) {
+					if (c.getId() == clientId) {
 						System.out.println(c.getExplictedCost());
 						break;
 					}
@@ -177,25 +174,25 @@ public class ReservationManagerConsole {
 		}
 	}
 
-	public void cancelReservation(){
-		if (clients.isEmpty()){
+	public void cancelReservation() {
+		if (clients.isEmpty()) {
 			System.out.println("Please add a Client first !");
 		} else {
-			for (Client c : clients){
-				System.out.println("Client n°"+c.getFullString());
+			for (Client c : clients) {
+				System.out.println("Client n°" + c.getFullString());
 			}
 			System.out.println("Please enter the id of the wanted client or -1 to cancel the action.");
 			try {
 				int clientId = Integer.valueOf(scan.nextLine());
-				for (Client c : clients){
-					if (c.getId() == clientId){
-						String valRow,valColumns;
+				for (Client c : clients) {
+					if (c.getId() == clientId) {
+						String valRow, valColumns;
 						System.out.println("\nPlease enter row letter");
 						valRow = scan.nextLine().toUpperCase();
 						System.out.println("\nPlease enter colum number");
 						valColumns = scan.nextLine();
 						try {
-							c.removeSeat(theater.cancelReservation((int)valRow.toCharArray()[0]-'A',
+							c.removeSeat(theater.cancelReservation((int) valRow.toCharArray()[0] - 'A',
 									Integer.valueOf(valColumns)));
 						} catch (InvalidActionException e) {
 							System.out.println("/!\\ This space is not valid for reservation /!\\");
@@ -211,39 +208,63 @@ public class ReservationManagerConsole {
 			}
 		}
 	}
-	
-	public void addClient(){
-		String firstName,lastName,address;
+
+	public void addClient() {
+		String firstName, lastName, address;
 
 		System.out.println("Please enter your lastName :");
 		lastName = scan.nextLine();
 		System.out.println("Please enter your firstName : ");
-		firstName = scan.nextLine();		
+		firstName = scan.nextLine();
 		System.out.println("Please enter your address : ");
 		address = scan.nextLine();
-		
-		Client client = new Client(lastName, firstName, address);
-		clients.add(client);
+
+		System.out.println("Choose client type or -1 to cancel the action.\n1 - Client\n2 - VIP\n3 - Group\n");
+		try {
+			int clientId = Integer.valueOf(scan.nextLine());
+			switch (clientId) {
+
+			case (1):
+				Client client = new Client(lastName, firstName, address);
+				clients.add(client);
+				break;
+
+			case (2):
+				ClientVIP cvip = new ClientVIP(lastName, firstName, address);
+				clients.add(cvip);
+				break;
+
+			case (3):
+				ClientGroup cgroup = new ClientGroup(lastName, firstName, address);
+				clients.add(cgroup);
+				break;
+			}
+			
+		} catch (InputMismatchException ime) {
+			System.out.println("This is not a valid number !");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
-	public Client selectClient(){
-		//TODO
+
+	public Client selectClient() {
+		// TODO
 		return null;
 	}
-	
-	public void removeLClient(){
-		if (clients.isEmpty()){
+
+	public void removeLClient() {
+		if (clients.isEmpty()) {
 			System.out.println("Please add a Client first !");
 		} else {
-			//Si il y a des clients dans l'appli
-			for (Client c : clients){
-				System.out.println("Client n°"+c.getFullString());
+			// Si il y a des clients dans l'appli
+			for (Client c : clients) {
+				System.out.println("Client n°" + c.getFullString());
 			}
 			System.out.println("Please enter the id of the client to be removed or -1 to cancel the action.");
 			try {
 				int clientId = Integer.valueOf(scan.nextLine());
-				for (Client c : clients){
-					if (c.getId() == clientId){
+				for (Client c : clients) {
+					if (c.getId() == clientId) {
 						clients.remove(clients.indexOf(c));
 						break;
 					}
@@ -255,13 +276,13 @@ public class ReservationManagerConsole {
 			}
 		}
 	}
-	
-	public void listClient(){
+
+	public void listClient() {
 		StringBuilder sb = new StringBuilder();
 		sb.append('[');
-		if (!clients.isEmpty()){
-			for (Client c : clients){
-				sb.append(c.toString()+";");
+		if (!clients.isEmpty()) {
+			for (Client c : clients) {
+				sb.append(c.toString() + ";");
 			}
 		}
 		sb.append(']');

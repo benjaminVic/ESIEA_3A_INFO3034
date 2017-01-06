@@ -24,6 +24,7 @@ public class ClientVIP extends Client {
 	public String getExplictedCost() {
 		StringBuilder sb = new StringBuilder();
 		double total = getReservationCost();
+		sb.append(getFirstName()).append(' ').append(getLastName()).append(" \"VIP\" has reserved seat numbers.\n");
 		for (Seat s : seats) {
 			if (getPromotionBySeatType(s.getType()) == 1) {
 				sb.append(s).append(toString()).append("(").append(s.getType().getPrice()).append("€)\n");
