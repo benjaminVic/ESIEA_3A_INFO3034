@@ -1,3 +1,4 @@
 #!/bin/bash
-javac ReservationManagerConsole.java
-java ReservationManagerConsole
+mkdir bin
+javac -d bin/ src/vic/*.java
+java -cp bin/ vic.ReservationManagerConsole
